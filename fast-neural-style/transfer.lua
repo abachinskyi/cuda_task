@@ -26,12 +26,7 @@ function main(params)
 	end
 	image = torch.reshape(image,content_batch_size):cuda()
 	local newimg = transfer_model:forward(image)
-	print(cutorch.getMemoryUsage(deviceId))
-	print(torch.type(newimg))
-	nn.utils.recursiveType(newimg, 'torch.FloatTensor')
-	collectgarbage()
-	print(torch.type(newimg))
-	print(cutorch.getMemoryUsage(deviceId))
+	newimg = newimg:float()
 	newimg = torch.reshape(newimg,org_size)
 
 	saveimg(newimg, params.output)
