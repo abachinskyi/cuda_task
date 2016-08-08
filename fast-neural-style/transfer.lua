@@ -22,7 +22,8 @@ function main(params)
 	end
 	image = torch.reshape(image,content_batch_size):cuda()
 	local newimg = transfer_model:forward(image)
-	print(newimg)
+	print(cutorch.getMemoryUsage(deviceId))
+	print(torch.type(newimg))
 	newimg = torch.reshape(newimg,org_size)
 
 	saveimg(newimg, params.output)
