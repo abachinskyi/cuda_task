@@ -1,17 +1,24 @@
 require 'nngraph'
 require 'loadcaffe'
-
+require 'cunn'
 function ResidualLayer(nFilters,ch,cw,sh,sw,ph,pw)
 	-- trying to conserve the network definition pattern
 	-- input size:  n*nFilters*width*height
 	-- output size: n*nFilters*width*height
 	return function (input)
 		local m1c = nn.SpatialConvolution(nFilters,nFilters,ch,cw,sh,sw,ph,pw)(input)
+		m1c = m1c:cuda()
 		local m1n = nn.SpatialBatchNormalization(nFilters)(m1c)
+		m1n = m1n:cuda()
 		local m1r = nn.ReLU()(m1n)
+		m1r = m1r:cuda()
 		local m2c = nn.SpatialConvolution(nFilters,nFilters,ch,cw,sh,sw,ph,pw)(m1r)
+		m2c = m2c:cuda()
 		local m2n = nn.SpatialBatchNormalization(nFilters)(m2c)
-		return nn.CAddTable()({m2n,input})
+		m2n = m2n:cuda()
+		res = nn.CAddTable()({m2n,input})
+		res = res:cuda()
+		return res
 	end
 end
 
@@ -19,12 +26,15 @@ function transferNet()
 	-- input size:  n*3*w*h
 	-- output size: n*3*w*h
 	local x = nn.Identity()()
+	x = x:cuda()
 	local c1 = nn.ReLU()(
 				nn.SpatialBatchNormalization(32)(
 				nn.SpatialConvolution(3,32,9,9,1,1,4,4)(x)))
+	c1 = c1:cuda()
 	local c2 = nn.ReLU()(
 				nn.SpatialBatchNormalization(64)(
 				nn.SpatialConvolution(32,64,3,3,2,2,1,1)(c1)))
+	c2 = c2:cuda()
 	local c3 = nn.ReLU()(
 				nn.SpatialBatchNormalization(128)(
 				nn.SpatialConvolution(64,128,3,3,2,2,1,1)(c2)))
@@ -89,7 +99,9 @@ end
 -- of size C x H x W
 function GramMatrix()
   local net = nn.Sequential()
+
   net:add(nn.View(-1):setNumInputDims(2))
+  net = net:cuda()
   local concat = nn.ConcatTable()
   concat:add(nn.Identity())
   concat:add(nn.Identity())
