@@ -5,6 +5,8 @@ require 'cudnn'
 require 'cunn'
 require 'cutorch'
 
+cutorch.setDevice(3)
+
 local cmd = torch.CmdLine()
 
 cmd:option('-content_img','image_sets/tubingen.jpg','The image to apply style transfer on')
