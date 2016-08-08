@@ -5,7 +5,7 @@ require 'cudnn'
 require 'cunn'
 require 'cutorch'
 
-cutorch.setDevice(3)
+
 
 local cmd = torch.CmdLine()
 
@@ -15,6 +15,8 @@ cmd:option('-output','output.jpg','The path to output')
 cmd:option('-output_size',false,'Maximum edge of the output image')
 
 function main(params)
+	cutorch.setDevice(1)
+	cutorch.setDevice(2)
 	timer = torch.Timer()
 	transfer_model = torch.load(params.transfer_model)
 	transfer_model = transfer_model:cuda()
