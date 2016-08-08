@@ -18,9 +18,9 @@ function main(params)
 	local content_batch_size = torch.LongStorage(4)
 	content_batch_size[1] = 1
 	for i=1,3 do
-		content_batch_size[i+1] = (#image)[i]:cuda()
+		content_batch_size[i+1] = (#image)[i]
 	end
-	image = torch.reshape(image,content_batch_size)
+	image = torch.reshape(image,content_batch_size):cuda()
 	local newimg = transfer_model:forward(image)
 	newimg = torch.reshape(newimg,org_size)
 
