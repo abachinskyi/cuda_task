@@ -11,13 +11,14 @@ cmd:option('-output_size',false,'Maximum edge of the output image')
 function main(params)
 	timer = torch.Timer()
 	transfer_model = torch.load(params.transfer_model)
-
+	transfer_model = transfer_model:cuda()
 	local image = loadimg(params.content_img,params.output_size):float()
+	image = image:cuda()
 	local org_size = #image
 	local content_batch_size = torch.LongStorage(4)
 	content_batch_size[1] = 1
 	for i=1,3 do
-		content_batch_size[i+1] = (#image)[i]
+		content_batch_size[i+1] = (#image)[i]:cuda()
 	end
 	image = torch.reshape(image,content_batch_size)
 	local newimg = transfer_model:forward(image)
