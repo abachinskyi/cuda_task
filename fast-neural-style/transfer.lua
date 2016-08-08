@@ -23,6 +23,7 @@ function main(params)
 	content_batch_size[1] = 1
 	for i=1,3 do
 		content_batch_size[i+1] = (#image)[i]
+		print(content_batch_size[i+1])
 	end
 	image = torch.reshape(image,content_batch_size):cuda()
 	local newimg = transfer_model:forward(image)
