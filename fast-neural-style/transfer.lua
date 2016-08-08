@@ -1,6 +1,10 @@
 require 'nngraph'
 require 'imgtools'
+require 'nn'
+require 'cudnn'
 require 'cunn'
+require 'cutorch'
+
 local cmd = torch.CmdLine()
 
 cmd:option('-content_img','image_sets/tubingen.jpg','The image to apply style transfer on')
