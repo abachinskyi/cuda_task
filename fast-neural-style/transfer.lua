@@ -35,6 +35,7 @@ function main(params)
 	newimg = torch.reshape(newimg,org_size)
 
 	saveimg(newimg, params.output)
+	print(cutorch.getDevice())
 	print('Transfer complete in '.. timer:time().real ..' seconds!')
 end
 
