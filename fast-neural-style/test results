@@ -1,0 +1,26 @@
+th> require 'transfer_cudnn.lua'
+3	
+1024	
+1024	
+Transfer complete in 0.36925792694092 seconds!	
+                                                                     
+th> require 'transfer_cudnn.lua'
+3	
+600	
+600	
+Transfer complete in 0.22309803962708 seconds!	
+                                                                     
+th> require 'transfer_cudnn.lua'
+3	
+384	
+512	
+Transfer complete in 0.12987303733826 seconds!	
+                                                                     
+th> require 'transfer_cudnn.lua'
+3	
+960	
+960	
+Transfer complete in 0.40149402618408 seconds!	
+                                                                      [0.5922s]	
+Transfer complete in 0.34193301200867 seconds!	
+                                                                     
